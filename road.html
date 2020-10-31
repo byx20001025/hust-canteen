@@ -1,0 +1,262 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>路书</title>
+	<style type="text/css">
+		body, html ,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		#container{height:500px;width:100%;}
+		#result {width:100%}
+	</style>
+	<!-- <script src="//api.map.baidu.com/api?v=2.0&ak=z1lgSTCwZYzhpOHdnLljuezP855v0b5A"></script> -->
+	<!-- <script type="text/javascript" src="//api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script> -->
+	
+	<script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+	<!-- <script type="text/javascript" src="https://assets.pyecharts.org/assets/bmap.min.js"></script> -->
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=Z2hzbMkqq4hgAS0IPHgRYPoRfjP9QBee"></script>
+    <script type="text/javascript" src="//api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+	<script type="text/javascript" src="https://api.map.baidu.com/getscript?v=2.0&ak=Z2hzbMkqq4hgAS0IPHgRYPoRfjP9QBee"></script>
+	
+</head>
+<body>
+	<div id="container"></div>
+	<div id="result"></div>
+	<button id="run">开始</button>
+	<button id="stop">停止</button>
+	<button id="Reset">重新选择</button>
+	<button id="Show">显示所有目标点</button>
+	<button id="Hide">隐藏所有目标点</button>
+	<script>
+	var map = new BMap.Map('container');
+	map.enableScrollWheelZoom();
+	map.centerAndZoom(new BMap.Point(114.421214,30.519139), 15);
+	var startMarker = function(e,ee,marker){
+			startPoint();
+		}
+	var endMarker = function(e,ee,marker){
+			endPoint();
+		}
+	var lushu;
+	
+	 var drv = new BMap.WalkingRoute(map, {
+        onSearchComplete: function(res) {
+            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+                var plan = res.getPlan(0);
+                var arrPois =[];
+                for(var j=0;j<plan.getNumRoutes();j++){
+                    var route = plan.getRoute(j);
+                    arrPois= arrPois.concat(route.getPath());
+                }
+				map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#222'}));
+                map.setViewport(arrPois);
+                lushu = new BMapLib.LuShu(map,arrPois,{
+                defaultContent:"",
+                autoView:true,
+               // icon : new BMap.Icon('../ding/可达鸭1.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+			    icon : new BMap.Icon('可达鸭1.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+     		   speed: 200 ,
+				enableRotation:true//是否设置marker随着道路的走向进行旋转
+               });
+			   
+            }
+        }
+    });
+
+	function Dictionary () {
+	    this.dataStore = [];
+	    this.add = add;         
+	    this.find = find;  
+	}
+	
+	function add( key , value ){
+	    this.dataStore[key] = value;
+	}
+	
+	function find( key ){
+	    return this.dataStore[key];
+	}
+	      var key = [];
+	      key[0]="114.412241*30.519908";
+		  key[1]="114.411954*30.519663";
+		  key[2]="114.411123*30.517854";
+		  key[3]="114.41322*30.519941";
+		  key[4]="114.414376*30.521839";
+		  key[5]="114.414041*30.520924";
+		  key[6]="114.411764*30.520532";
+		  key[7]="114.412321*30.519637";
+		  key[8]="114.414576*30.520757";
+		  key[9]="114.413942*30.520788";
+		  key[10]="114.418932*30.522464";
+		  key[11]="114.420496*30.520329";
+		  key[12]="114.421448*30.522441";
+		  key[13]="114.421376*30.52185";
+		  key[14]="114.425882*30.516702";
+		  key[15]="114.426168*30.516495";
+		  key[16]="114.426168*30.516495";
+		  key[17]="114.423524*30.520158";
+		  key[18]="114.438496*30.520203";
+		  key[19]="114.438476*30.517033";
+		  key[20]="114.438422*30.512635";
+		  key[21]="114.442597*30.519221";
+		  key[22]="114.440018*30.520975";
+		  key[23]="114.441096*30.520757";
+		  key[24]="114.4221*30.522286";
+		  key[25]="114.408145*30.517614";
+		  key[26]="114.438725*30.520125";
+		  key[27]="114.4211*30.521863";
+		  key[28]="114.411165*30.521211";
+
+	
+	var store = new Dictionary();
+	store.add("114.412241*30.519908","西一食堂");
+	store.add("114.411954*30.519663","西二食堂");
+	store.add("114.411123*30.517854","百惠园食堂");
+	store.add("114.41322*30.519941","百品屋");
+	store.add("114.414376*30.521839","百景园");
+	store.add("114.414041*30.520924","枫林湾");
+	store.add("114.411764*30.520532","西园学生餐厅");
+	store.add("114.412321*30.519637","沃家乐披萨");
+	store.add("114.414576*30.520757","茶舍");
+	store.add("114.413942*30.520788","一品豆花");
+	store.add("114.418932*30.522464","风亭渡");
+	store.add("114.420496*30.520329","美味食客");
+	store.add("114.421448*30.522441","集锦园");
+	store.add("114.421376*30.52185","喻园餐厅");
+	store.add("114.425882*30.516702","东一、二学生食堂");
+	store.add("114.426168*30.516495","紫荆园餐厅");
+	store.add("114.426168*30.516495","东三学生食堂");
+	store.add("114.423524*30.520158","集贤楼一、二楼食堂");
+	store.add("114.438496*30.520203","韵苑一、二楼学生食堂");
+	store.add("114.438476*30.517033","学生一、二食堂");
+	store.add("114.438422*30.512635","东教工食堂");
+	store.add("114.442597*30.519221","东园一、二、三学生食堂");
+	store.add("114.440018*30.520975","韵苑茶咖");
+	store.add("114.441096*30.520757","东篱");
+	store.add("114.4221*30.522286","麦当劳");
+	store.add("114.408145*30.517614","青洛烧仙草");
+	store.add("114.438725*30.520125","书亦烧仙草");
+	store.add("114.4211*30.521863","周麻婆");
+	store.add("114.411165*30.521211","氧气层咖啡");
+
+	
+	function attribute(b){
+		medium = b.target;
+		var markerMenu=new BMap.ContextMenu();
+		markerMenu.addItem(new BMap.MenuItem('设起点',startMarker.bind(medium)));
+		markerMenu.addItem(new BMap.MenuItem('设终点',endMarker.bind(medium)));
+		medium.addContextMenu(markerMenu);
+		}
+		
+		function attributeover(b){
+			var medium1 = b.target;
+			var i=0;
+			var j=0;
+			var medstring=medium1.getPosition().lng +"*" + medium1.getPosition().lat;
+			while(i<29){
+				
+				if(medstring==key[i]){
+					qwq = store.find(medstring);
+					var label = new BMap.Label(qwq,{offset:new BMap.Size(20,-10)});
+					medium1.setLabel(label);
+					break;
+				}
+				else{
+					i = i + 1;
+				}
+			}
+		}
+		
+		function attributeout(b){
+			var point2 = b.target
+			map.removeOverlay(point2.getLabel());
+		}
+		
+	
+	function addMarker(x,y){
+		  point=new BMap.Point(x,y);
+		  var marker = new BMap.Marker(point);
+		  map.addOverlay(marker);
+		  marker.addEventListener("click",attribute);
+		  marker.addEventListener("mouseover",attributeover);
+		  marker.addEventListener("mouseout",attributeout);
+		  marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+		  }
+	 
+	function showOver(){
+		     addMarker(114.412241,30.519908);
+			 addMarker(114.411954,30.519663);
+			 addMarker(114.411123,30.517854);
+			 addMarker(114.41322,30.519941);
+			 addMarker(114.414376,30.521839);
+			 addMarker(114.414041,30.520924);
+			 addMarker(114.411764,30.520532);
+			 addMarker(114.412321,30.519637);
+			 addMarker(114.414576,30.520757);
+			 addMarker(114.413942,30.520788);
+			 addMarker(114.418932,30.522464);
+			 addMarker(114.420496,30.520329);
+			 addMarker(114.421448,30.522441);
+			 addMarker(114.421376,30.52185);
+			 addMarker(114.425882,30.516702);
+			 addMarker(114.426168,30.516495);
+			 addMarker(114.426168,30.516495);
+			 addMarker(114.423524,30.520158);
+			 addMarker(114.438496,30.520203);
+			 addMarker(114.438476,30.517033);
+			 addMarker(114.438422,30.512635);
+			 addMarker(114.442597,30.519221);
+			 addMarker(114.440018,30.520975);
+			 addMarker(114.441096,30.520757);
+			 addMarker(114.4221,30.522286);
+			 addMarker(114.408145,30.517614);
+			 addMarker(114.438725,30.520125);
+			 addMarker(114.4211,30.521863);
+			 addMarker(114.411165,30.521211);
+		     map.setViewport(pointArray);
+		}
+	
+	function deletePoint(){
+			var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++){
+				 map.removeOverlay(allOverlay[i]);
+			}
+		}
+		
+	function resetPoint(){
+			var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++){
+				 map.removeOverlay(allOverlay[i]);
+			}
+			showOver();
+		}	
+			
+	function startPoint(){
+		start = medium;
+		alert("起点的位置是"+ start.getPosition().lng + "," + start.getPosition().lat);
+	}
+	function endPoint(){
+		  end = medium;
+		  alert("终点的位置是"+ end.getPosition().lng + "," + end.getPosition().lat);
+		  drv.search(start, end);
+	}	
+	
+	$("run").onclick = function(){
+		lushu.start();
+	}
+	$("Show").onclick = function(){
+		showOver();
+	}
+	$("stop").onclick = function(){
+		lushu.pause();
+	}
+	$("Hide").onclick = function(){
+		deletePoint();
+	}
+     $("Reset").onclick = function(){
+		resetPoint();
+	}
+	function $(element){
+		return document.getElementById(element);
+	}
+</script>
+</body>
+</html>
